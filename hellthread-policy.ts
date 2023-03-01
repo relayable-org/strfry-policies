@@ -28,21 +28,23 @@ interface Event {
 }
 
 function handleMessage(msg: InputMessage): OutputMessage {
-  const p = msg.event.tags.filter((tag) => tag[0] === 'p');
+  if (msg.event.kind === 1) {
+    const p = msg.event.tags.filter((tag) => tag[0] === 'p');
 
-  if (p.length > HELLTHREAD_LIMIT) {
-    return {
-      id: msg.event.id,
-      action: 'reject',
-      msg: `Event rejected due to ${p.length} "p" tags (${HELLTHREAD_LIMIT} is the limit).`,
-    };
-  } else {
-    return {
-      id: msg.event.id,
-      action: 'accept',
-      msg: '',
-    };
+    if (p.length > HELLTHREAD_LIMIT) {
+      return {
+        id: msg.event.id,
+        action: 'reject',
+        msg: `Event rejected due to ${p.length} "p" tags (${HELLTHREAD_LIMIT} is the limit).`,
+      };
+    }
   }
+
+  return {
+    id: msg.event.id,
+    action: 'accept',
+    msg: '',
+  };
 }
 
 for await (const line of readLines(Deno.stdin)) {
