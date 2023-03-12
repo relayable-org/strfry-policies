@@ -1,7 +1,7 @@
 #!/usr/bin/env -S deno run
 import { readLines } from 'https://deno.land/std@0.178.0/io/mod.ts';
 
-const HELLTHREAD_LIMIT = Number(Deno.env.get('HELLTHREAD_LIMIT') || 20);
+const HELLTHREAD_LIMIT = Number(Deno.env.get('HELLTHREAD_LIMIT') || 100);
 
 interface InputMessage {
   type: 'new' | 'lookback';
