@@ -1,4 +1,5 @@
-#!/usr/bin/env -S deno run
+#!/bin/sh
+//bin/true; exec deno run -A "$0" "$@"
 import { readLines } from 'https://deno.land/std@0.178.0/io/mod.ts';
 import { Keydb } from 'https://deno.land/x/keydb@1.0.0/sqlite.ts';
 
@@ -52,7 +53,7 @@ async function handleMessage(msg: InputMessage): Promise<OutputMessage> {
       return {
         id: msg.event.id,
         action: 'shadowReject',
-        msg: `Event rejected due to duplicated content found within the last ${ANTI_DUPLICATION_TTL}ms.`,
+        msg: '',
       };
     }
 
