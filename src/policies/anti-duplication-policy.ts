@@ -1,24 +1,16 @@
-#!/bin/sh
-//bin/true; exec deno run -A "$0" "$@"
-import { Keydb, readLines } from '../deps.ts';
+import { Keydb } from '../deps.ts';
 
-import type { InputMessage, OutputMessage } from '../types.ts';
+import type { Policy } from '../types.ts';
 
 const ANTI_DUPLICATION_TTL = Number(Deno.env.get('ANTI_DUPLICATION_TTL') || 60000);
 const ANTI_DUPLICATION_MIN_LENGTH = Number(Deno.env.get('ANTI_DUPLICATION_MIN_LENGTH') || 50);
 
-/** https://stackoverflow.com/a/8831937 */
-function hashCode(str: string): number {
-  let hash = 0;
-  for (let i = 0, len = str.length; i < len; i++) {
-    const chr = str.charCodeAt(i);
-    hash = (hash << 5) - hash + chr;
-    hash |= 0; // Convert to 32bit integer
-  }
-  return hash;
-}
-
-async function handleMessage(msg: InputMessage): Promise<OutputMessage> {
+/**
+ * Prevent messages with the exact same content from being submitted repeatedly.
+ * It stores a hashcode for each content in an SQLite database and rate-limits them.
+ * Only messages that meet the minimum length criteria are selected.
+ */
+const antiDuplicationPolicy: Policy = async (msg) => {
   const { kind, content } = msg.event;
 
   if (kind === 1 && content.length >= ANTI_DUPLICATION_MIN_LENGTH) {
@@ -42,8 +34,21 @@ async function handleMessage(msg: InputMessage): Promise<OutputMessage> {
     action: 'accept',
     msg: '',
   };
+};
+
+/**
+ * Get a "good enough" unique identifier for this content.
+ * This algorithm was chosen because it's very fast with a low chance of collisions.
+ * https://stackoverflow.com/a/8831937
+ */
+function hashCode(str: string): number {
+  let hash = 0;
+  for (let i = 0, len = str.length; i < len; i++) {
+    const chr = str.charCodeAt(i);
+    hash = (hash << 5) - hash + chr;
+    hash |= 0; // Convert to 32bit integer
+  }
+  return hash;
 }
 
-for await (const line of readLines(Deno.stdin)) {
-  console.log(JSON.stringify(await handleMessage(JSON.parse(line))));
-}
+export default antiDuplicationPolicy;

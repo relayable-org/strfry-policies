@@ -1,17 +1,10 @@
-#!/bin/sh
-//bin/true; exec deno run -A "$0" "$@"
-import { readLines } from '../deps.ts';
+import type { Policy } from '../types.ts';
 
-import type { InputMessage, OutputMessage } from '../types.ts';
+/** This policy rejects all messages. */
+const readOnlyPolicy: Policy = (msg) => ({
+  id: msg.event.id,
+  action: 'reject',
+  msg: 'The relay is read-only.',
+});
 
-function handleMessage(msg: InputMessage): OutputMessage {
-  return {
-    id: msg.event.id,
-    action: 'reject',
-    msg: 'The relay is set to read-only.',
-  };
-}
-
-for await (const line of readLines(Deno.stdin)) {
-  console.log(JSON.stringify(handleMessage(JSON.parse(line))));
-}
+export default readOnlyPolicy;

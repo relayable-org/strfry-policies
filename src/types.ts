@@ -22,4 +22,6 @@ interface Event<K extends number = number> {
   created_at: number;
 }
 
-export type { Event, InputMessage, OutputMessage };
+type Policy = (msg: InputMessage) => Promise<OutputMessage> | OutputMessage;
+
+export type { Event, InputMessage, OutputMessage, Policy };

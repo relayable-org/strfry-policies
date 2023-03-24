@@ -1,15 +1,18 @@
-#!/bin/sh
-//bin/true; exec deno run -A "$0" "$@"
-import { Keydb, readLines } from '../deps.ts';
+import { Keydb } from '../deps.ts';
 
-import type { InputMessage, OutputMessage } from '../types.ts';
+import type { Policy } from '../types.ts';
 
 const IP_WHITELIST = (Deno.env.get('IP_WHITELIST') || '').split(',');
 
 const RATE_LIMIT_INTERVAL = Number(Deno.env.get('RATE_LIMIT_INTERVAL') || 60000);
 const RATE_LIMIT_MAX = Number(Deno.env.get('RATE_LIMIT_MAX') || 10);
 
-async function handleMessage(msg: InputMessage): Promise<OutputMessage> {
+/**
+ * Rate-limits users by their IP address.
+ * IPs are stored in an SQLite database. If you are running internal services,
+ * it's a good idea to at least whitelist `127.0.0.1` etc.
+ */
+const rateLimitPolicy: Policy = async (msg) => {
   if ((msg.sourceType === 'IP4' || msg.sourceType === 'IP6') && !IP_WHITELIST.includes(msg.sourceInfo)) {
     const db = new Keydb('sqlite:///tmp/strfry-rate-limit-policy.sqlite3');
     const count = await db.get<number>(msg.sourceInfo) || 0;
@@ -29,8 +32,6 @@ async function handleMessage(msg: InputMessage): Promise<OutputMessage> {
     action: 'accept',
     msg: '',
   };
-}
+};
 
-for await (const line of readLines(Deno.stdin)) {
-  console.log(JSON.stringify(await handleMessage(JSON.parse(line))));
-}
+export default rateLimitPolicy;

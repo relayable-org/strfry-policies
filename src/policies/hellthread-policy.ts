@@ -1,11 +1,9 @@
-#!/usr/bin/env -S deno run
-import { readLines } from '../deps.ts';
-
-import type { InputMessage, OutputMessage } from '../types.ts';
+import type { Policy } from '../types.ts';
 
 const HELLTHREAD_LIMIT = Number(Deno.env.get('HELLTHREAD_LIMIT') || 100);
 
-function handleMessage(msg: InputMessage): OutputMessage {
+/** Reject messages that tag too many participants. */
+const hellthreadPolicy: Policy = (msg) => {
   if (msg.event.kind === 1) {
     const p = msg.event.tags.filter((tag) => tag[0] === 'p');
 
@@ -23,8 +21,6 @@ function handleMessage(msg: InputMessage): OutputMessage {
     action: 'accept',
     msg: '',
   };
-}
+};
 
-for await (const line of readLines(Deno.stdin)) {
-  console.log(JSON.stringify(handleMessage(JSON.parse(line))));
-}
+export default hellthreadPolicy;
