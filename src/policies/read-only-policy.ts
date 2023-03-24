@@ -1,6 +1,6 @@
 #!/bin/sh
 //bin/true; exec deno run -A "$0" "$@"
-import { readLines } from 'https://deno.land/std@0.178.0/io/mod.ts';
+import { readLines } from '../deps.ts';
 
 import type { InputMessage, OutputMessage } from '../types.ts';
 

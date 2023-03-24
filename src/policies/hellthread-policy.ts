@@ -1,5 +1,5 @@
 #!/usr/bin/env -S deno run
-import { readLines } from 'https://deno.land/std@0.178.0/io/mod.ts';
+import { readLines } from '../deps.ts';
 
 import type { InputMessage, OutputMessage } from '../types.ts';
 
