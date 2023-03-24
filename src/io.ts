@@ -1,6 +1,6 @@
 import { readLines } from './deps.ts';
 
-import type { InputMessage } from './types.ts';
+import type { InputMessage, OutputMessage } from './types.ts';
 
 /**
  * Get the first line from stdin.
@@ -11,4 +11,9 @@ async function readStdin(): Promise<InputMessage> {
   return JSON.parse(value);
 }
 
-export { readStdin };
+/** Writes the output message to stdout. */
+function writeStdout(msg: OutputMessage): void {
+  console.log(JSON.stringify(msg));
+}
+
+export { readStdin, writeStdout };
