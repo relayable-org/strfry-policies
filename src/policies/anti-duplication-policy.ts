@@ -3,32 +3,10 @@
 import { readLines } from 'https://deno.land/std@0.178.0/io/mod.ts';
 import { Keydb } from 'https://deno.land/x/keydb@1.0.0/sqlite.ts';
 
+import type { InputMessage, OutputMessage } from '../types.ts';
+
 const ANTI_DUPLICATION_TTL = Number(Deno.env.get('ANTI_DUPLICATION_TTL') || 60000);
 const ANTI_DUPLICATION_MIN_LENGTH = Number(Deno.env.get('ANTI_DUPLICATION_MIN_LENGTH') || 50);
-
-interface InputMessage {
-  type: 'new' | 'lookback';
-  event: Event;
-  receivedAt: number;
-  sourceType: 'IP4' | 'IP6' | 'Import' | 'Stream' | 'Sync';
-  sourceInfo: string;
-}
-
-interface OutputMessage {
-  id: string;
-  action: 'accept' | 'reject' | 'shadowReject';
-  msg: string;
-}
-
-interface Event {
-  id: string;
-  sig: string;
-  kind: number;
-  tags: string[][];
-  pubkey: string;
-  content: string;
-  created_at: number;
-}
 
 /** https://stackoverflow.com/a/8831937 */
 function hashCode(str: string): number {

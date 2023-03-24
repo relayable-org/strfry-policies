@@ -1,31 +1,9 @@
 #!/usr/bin/env -S deno run
 import { readLines } from 'https://deno.land/std@0.178.0/io/mod.ts';
 
+import type { InputMessage, OutputMessage } from '../types.ts';
+
 const HELLTHREAD_LIMIT = Number(Deno.env.get('HELLTHREAD_LIMIT') || 100);
-
-interface InputMessage {
-  type: 'new' | 'lookback';
-  event: Event;
-  receivedAt: number;
-  sourceType: 'IP4' | 'IP6' | 'Import' | 'Stream' | 'Sync';
-  sourceInfo: string;
-}
-
-interface OutputMessage {
-  id: string;
-  action: 'accept' | 'reject' | 'shadowReject';
-  msg: string;
-}
-
-interface Event {
-  id: string;
-  sig: string;
-  kind: number;
-  tags: string[][];
-  pubkey: string;
-  content: string;
-  created_at: number;
-}
 
 function handleMessage(msg: InputMessage): OutputMessage {
   if (msg.event.kind === 1) {
