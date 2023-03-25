@@ -34,7 +34,7 @@ import {
   rateLimitPolicy,
   readStdin,
   writeStdout,
-} from './mod.ts';
+} from 'https://gitlab.com/soapbox-pub/strfry-policies/-/raw/develop/mod.ts';
 
 for await (const msg of readStdin()) {
   const result = await pipeline(msg, [
@@ -114,7 +114,7 @@ Once you're done, you can either upload the file somewhere online or directly to
 @@ -8,12 +8,14 @@ import {
    readStdin,
    writeStdout,
- } from './mod.ts';
+ } from 'https://gitlab.com/soapbox-pub/strfry-policies/-/raw/develop/mod.ts';
 +import { americanPolicy } from 'https://gist.githubusercontent.com/alexgleason/5c2d084434fa0875397f44da198f4352/raw/3d3ce71c7ed9cef726f17c3a102c378b81760a45/american-policy.ts';
  
  for await (const msg of readStdin()) {
