@@ -15,8 +15,8 @@ const msg = await readStdin();
 const result = await pipeline(msg, [
   noopPolicy,
   [hellthreadPolicy, { limit: 100 }],
-  antiDuplicationPolicy,
-  rateLimitPolicy,
+  [antiDuplicationPolicy, { ttl: 60000, minLength: 50 }],
+  [rateLimitPolicy, { whitelist: ['127.0.0.1'] }],
 ]);
 
 writeStdout(result);
