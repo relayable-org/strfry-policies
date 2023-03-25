@@ -5,16 +5,16 @@ type PolicyTuple<P extends Policy = Policy> = [policy: P, opts?: InferPolicyOpts
 /** Infer opts from the policy. */
 type InferPolicyOpts<P> = P extends Policy<infer Opts> ? Opts : never;
 
-/** Helper type for proper type inference of PolicyTuples in the pipeline. */
+/** Helper type for proper type inference of PolicyTuples. */
 // https://stackoverflow.com/a/75806165
 // https://stackoverflow.com/a/54608401
-type PolicySpread<T extends any[]> = {
+type Policies<T extends any[]> = {
   [K in keyof T]: PolicyTuple<T[K]> | Policy<T[K]>;
 };
 
 /** Processes messages through multiple policies, bailing early on rejection. */
-async function pipeline<T extends any[]>(msg: InputMessage, policies: [...PolicySpread<T>]): Promise<OutputMessage> {
-  for (const item of policies) {
+async function pipeline<T extends unknown[]>(msg: InputMessage, policies: [...Policies<T>]): Promise<OutputMessage> {
+  for (const item of policies as (Policy | PolicyTuple)[]) {
     const [policy, opts] = toTuple(item);
     const result = await policy(msg, opts);
     if (result.action !== 'accept') {
