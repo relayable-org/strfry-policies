@@ -34,7 +34,7 @@ import {
   rateLimitPolicy,
   readStdin,
   writeStdout,
-} from 'https://gitlab.com/soapbox-pub/strfry-policies/-/blob/develop/mod.ts';
+} from 'https://gitlab.com/soapbox-pub/strfry-policies/-/raw/develop/mod.ts';
 
 const msg = await readStdin();
 
@@ -68,7 +68,7 @@ You can write a policy in TypeScript and host it anywhere. Deno allows importing
 Here is a basic sample policy:
 
 ```ts
-import type { Policy } from 'https://gitlab.com/soapbox-pub/strfry-policies/-/blob/develop/mod.ts';
+import type { Policy } from 'https://gitlab.com/soapbox-pub/strfry-policies/-/raw/develop/mod.ts';
 
 /** Only American English is allowed. */
 const americanPolicy: Policy<void> = (msg) => {
@@ -113,7 +113,7 @@ Once you're done, you can either upload the file somewhere online or directly to
 @@ -9,6 +9,7 @@ import {
    readStdin,
    writeStdout,
- } from 'https://gitlab.com/soapbox-pub/strfry-policies/-/blob/develop/mod.ts';
+ } from 'https://gitlab.com/soapbox-pub/strfry-policies/-/raw/develop/mod.ts';
 +import { americanPolicy } from 'https://gist.githubusercontent.com/alexgleason/5c2d084434fa0875397f44da198f4352/raw/3d3ce71c7ed9cef726f17c3a102c378b81760a45/american-policy.ts';
  
  const msg = await readStdin();
@@ -136,7 +136,7 @@ The `Policy<Opts>` type is a generic that accepts options of any type. With opts
 --- a/american-policy.ts
 +++ b/american-policy.ts
 @@ -1,7 +1,11 @@
- import type { Policy } from 'https://gitlab.com/soapbox-pub/strfry-policies/-/blob/develop/mod.ts';
+ import type { Policy } from 'https://gitlab.com/soapbox-pub/strfry-policies/-/raw/develop/mod.ts';
  
 +interface American {
 +  withGrey?: boolean;
