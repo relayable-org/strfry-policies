@@ -13,10 +13,10 @@ import {
 const msg = await readStdin();
 
 const result = await pipeline(msg, [
-  noopPolicy,
-  hellthreadPolicy,
-  antiDuplicationPolicy,
-  rateLimitPolicy,
+  [noopPolicy],
+  [hellthreadPolicy, { limit: 100 }],
+  [antiDuplicationPolicy],
+  [rateLimitPolicy],
 ]);
 
 writeStdout(result);
