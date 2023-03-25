@@ -33,3 +33,5 @@ function toTuple<T>(item: PolicyTuple<T> | Policy<T>): PolicyTuple<T> {
 }
 
 export default pipeline;
+
+export type { PolicyTuple };

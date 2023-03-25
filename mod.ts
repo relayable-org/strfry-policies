@@ -6,3 +6,6 @@ export { default as readOnlyPolicy } from './src/policies/read-only-policy.ts';
 
 export { readStdin, writeStdout } from './src/io.ts';
 export { default as pipeline } from './src/pipeline.ts';
+
+export type { Event, InputMessage, OutputMessage, Policy } from './src/types.ts';
+export type { PolicyTuple } from './src/pipeline.ts';
