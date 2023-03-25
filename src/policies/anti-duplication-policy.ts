@@ -2,23 +2,33 @@ import { Keydb } from '../deps.ts';
 
 import type { Policy } from '../types.ts';
 
-const ANTI_DUPLICATION_TTL = Number(Deno.env.get('ANTI_DUPLICATION_TTL') || 60000);
-const ANTI_DUPLICATION_MIN_LENGTH = Number(Deno.env.get('ANTI_DUPLICATION_MIN_LENGTH') || 50);
+interface AntiDuplication {
+  /** Time in ms until a message with this content may be posted again. Default: `60000` (1 minute). */
+  ttl?: number;
+  /** Note text under this limit will be skipped by the policy. Default: `50`. */
+  minLength?: number;
+  /** Database connection string. Default: `sqlite:///tmp/strfry-anti-duplication-policy.sqlite3` */
+  databaseUrl?: string;
+}
 
 /**
  * Prevent messages with the exact same content from being submitted repeatedly.
  * It stores a hashcode for each content in an SQLite database and rate-limits them.
  * Only messages that meet the minimum length criteria are selected.
  */
-const antiDuplicationPolicy: Policy = async (msg) => {
+const antiDuplicationPolicy: Policy<AntiDuplication> = async (msg, opts) => {
+  const ttl = opts?.ttl ?? 60000;
+  const minLength = opts?.minLength ?? 50;
+  const databaseUrl = opts?.databaseUrl || 'sqlite:///tmp/strfry-anti-duplication-policy.sqlite3';
+
   const { kind, content } = msg.event;
 
-  if (kind === 1 && content.length >= ANTI_DUPLICATION_MIN_LENGTH) {
-    const db = new Keydb('sqlite:///tmp/strfry-anti-duplication-policy.sqlite3');
+  if (kind === 1 && content.length >= minLength) {
+    const db = new Keydb(databaseUrl);
     const hash = String(hashCode(content));
 
     if (await db.get(hash)) {
-      await db.set(hash, 1, ANTI_DUPLICATION_TTL);
+      await db.set(hash, 1, ttl);
       return {
         id: msg.event.id,
         action: 'shadowReject',
@@ -26,7 +36,7 @@ const antiDuplicationPolicy: Policy = async (msg) => {
       };
     }
 
-    await db.set(hash, 1, ANTI_DUPLICATION_TTL);
+    await db.set(hash, 1, ttl);
   }
 
   return {
@@ -52,3 +62,5 @@ function hashCode(str: string): number {
 }
 
 export default antiDuplicationPolicy;
+
+export type { AntiDuplication };
