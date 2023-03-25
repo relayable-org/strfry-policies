@@ -1,8 +1,182 @@
 # strfry policies
 
-A collection of policies for the [strfry](https://github.com/hoytech/strfry) relay, written in Deno.
+A collection of policies for the [strfry](https://github.com/hoytech/strfry) Nostr relay, built in Deno.
 
 For more information about installing these policies and how they work, see [Write policy plugins](https://github.com/hoytech/strfry/blob/master/docs/plugins.md).
+
+This library introduces a model for writing policies and composing them in a pipeline. Policies are fully configurable and it's easy to add your own or install more from anywhere on the net.
+
+## Getting started
+
+To get up and running, you will need to install Deno on the same machine as strfry:
+
+```sh
+sudo apt install -y unzip
+curl -fsSL https://deno.land/x/install/install.sh | sudo DENO_INSTALL=/usr/local sh
+```
+
+Create an entrypoint file somewhere and make it executable:
+
+```sh
+sudo touch /opt/strfry-policy.ts
+sudo chmod +x /opt/strfry-policy.ts
+```
+
+Now you can write your policy. Here's a good starting point:
+
+```ts
+#!/bin/sh
+//bin/true; exec deno run -A "$0" "$@"
+import {
+  antiDuplicationPolicy,
+  hellthreadPolicy,
+  pipeline,
+  rateLimitPolicy,
+  readStdin,
+  writeStdout,
+} from 'https://gitlab.com/soapbox-pub/strfry-policies/-/blob/develop/mod.ts';
+
+const msg = await readStdin();
+
+const result = await pipeline(msg, [
+  [hellthreadPolicy, { limit: 100 }],
+  [antiDuplicationPolicy, { ttl: 60000, minLength: 50 }],
+  [rateLimitPolicy, { whitelist: ['127.0.0.1'] }],
+]);
+
+writeStdout(result);
+```
+
+Finally, edit `strfry.conf` and enable the policy:
+
+```diff
+     writePolicy {
+         # If non-empty, path to an executable script that implements the writePolicy plugin logic
+-        plugin = ""
++        plugin = "/opt/strfry-policy.ts"
+ 
+         # Number of seconds to search backwards for lookback events when starting the writePolicy plugin (0 for no lookback)
+         lookbackSeconds = 0
+```
+
+That's it! 🎉 Now you should check strfry logs to ensure everything is working okay.
+
+## Writing your own policies
+
+You can write a policy in TypeScript and host it anywhere. Deno allows importing modules by URL, making it easy to share policies.
+
+Here is a basic sample policy:
+
+```ts
+import type { Policy } from 'https://gitlab.com/soapbox-pub/strfry-policies/-/blob/develop/mod.ts';
+
+/** Only American English is allowed. */
+const americanPolicy: Policy<void> = (msg) => {
+  const { content } = msg.event;
+
+  const words = [
+    'armour',
+    'behaviour',
+    'colour',
+    'favourite',
+    'flavour',
+    'honour',
+    'humour',
+    'rumour',
+  ];
+
+  const isBritish = words.some((word) => content.toLowerCase().includes(word));
+
+  if (isBritish) {
+    return {
+      id: msg.event.id,
+      action: 'reject',
+      msg: 'Sorry, only American English is allowed on this server!',
+    };
+  } else {
+    return {
+      id: msg.event.id,
+      action: 'accept',
+      msg: '',
+    };
+  }
+};
+
+export default americanPolicy;
+```
+
+Once you're done, you can either upload the file somewhere online or directly to your server. Then, update your pipeline:
+
+```diff
+--- a/strfry-policy.ts
++++ b/strfry-policy.ts
+@@ -9,6 +9,7 @@ import {
+   readStdin,
+   writeStdout,
+ } from 'https://gitlab.com/soapbox-pub/strfry-policies/-/blob/develop/mod.ts';
++import { americanPolicy } from 'https://gist.githubusercontent.com/alexgleason/5c2d084434fa0875397f44da198f4352/raw/3d3ce71c7ed9cef726f17c3a102c378b81760a45/american-policy.ts';
+ 
+ const msg = await readStdin();
+ 
+@@ -17,6 +18,7 @@ const result = await pipeline(msg, [
+   [hellthreadPolicy, { limit: 100 }],
+   [antiDuplicationPolicy, { ttl: 60000, minLength: 50 }],
+   [rateLimitPolicy, { whitelist: ['127.0.0.1'] }],
++  americanPolicy,
+ ]);
+ 
+ writeStdout(result);
+```
+
+### Policy options
+
+The `Policy<Opts>` type is a generic that accepts options of any type. With opts, the policy above could be rewritten as:
+
+```diff
+--- a/american-policy.ts
++++ b/american-policy.ts
+@@ -1,7 +1,11 @@
+ import type { Policy } from 'https://gitlab.com/soapbox-pub/strfry-policies/-/blob/develop/mod.ts';
+ 
++interface American {
++  withGrey?: boolean;
++}
++
+ /** Only American English is allowed. */
+-const americanPolicy: Policy<void> = (msg) => {
++const americanPolicy: Policy<American> = (msg, opts) => {
+   const { content } = msg.event;
+ 
+   const words = [
+@@ -15,6 +19,10 @@
+     'rumour',
+   ];
+ 
++  if (opts?.withGrey) {
++    words.push('grey');
++  }
++
+   const isBritish = words.some((word) => content.toLowerCase().includes(word));
+ 
+   if (isBritish) {
+```
+
+Then, in the pipeline:
+
+```diff
+-  americanPolicy,
++  [americanPolicy, { withGrey: true }],
+```
+
+### Caveats
+
+- You should not use `console.log` anywhere in your policies, as strfry expects stdout to be the strfry output message.
+
+## Available policies
+
+Please look directly at `src/policies` in this repo. The files include detailed JSDoc comments and it has good type support.
+
+![Policies TypeScript](https://gitlab.com/soapbox-pub/strfry-policies/uploads/dfb993b3464af5ed78bb8e5db8677458/Kazam_screencast_00090.webm)
 
 ## License
 
