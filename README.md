@@ -45,7 +45,6 @@ for await (const msg of readStdin()) {
 
   writeStdout(result);
 }
-
 ```
 
 Finally, edit `strfry.conf` and enable the policy:
