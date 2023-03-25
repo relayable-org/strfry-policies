@@ -1,7 +1,9 @@
 import { InputMessage, OutputMessage, Policy } from './types.ts';
 
 /** A policy function with opts to run it with. Used by the pipeline. */
-type PolicyTuple<Opts = unknown> = [policy: Policy<Opts>, opts?: Opts];
+type PolicyTuple<P extends Policy = Policy> = [policy: P, opts?: InferPolicyOpts<P>];
+/** Infer opts from the policy. */
+type InferPolicyOpts<P> = P extends Policy<infer Opts> ? Opts : never;
 
 /** Helper type for proper type inference of PolicyTuples in the pipeline. */
 // https://stackoverflow.com/a/75806165
@@ -28,7 +30,7 @@ async function pipeline<T extends any[]>(msg: InputMessage, policies: [...Policy
 }
 
 /** Coerce item into a tuple if it isn't already. */
-function toTuple<T>(item: PolicyTuple<T> | Policy<T>): PolicyTuple<T> {
+function toTuple<P extends Policy>(item: PolicyTuple<P> | P): PolicyTuple<P> {
   return typeof item === 'function' ? [item] : item;
 }
 
