@@ -6,15 +6,12 @@ type PolicyTuple<Opts = unknown> = [policy: Policy<Opts>, opts?: Opts];
 /** Helper type for proper type inference of PolicyTuples in the pipeline. */
 // https://stackoverflow.com/a/75806165
 // https://stackoverflow.com/a/54608401
-type PolicyTuplesRest<T extends PolicyTuple[]> = {
+type PolicySpread<T extends any[]> = {
   [K in keyof T]: PolicyTuple<T[K]> | Policy<T[K]>;
 };
 
 /** Processes messages through multiple policies, bailing early on rejection. */
-async function pipeline<P extends any[]>(
-  msg: InputMessage,
-  policies: [...PolicyTuplesRest<P>],
-): Promise<OutputMessage> {
+async function pipeline<T extends any[]>(msg: InputMessage, policies: [...PolicySpread<T>]): Promise<OutputMessage> {
   for (const item of policies) {
     const [policy, opts] = toTuple(item);
     const result = await policy(msg, opts);
