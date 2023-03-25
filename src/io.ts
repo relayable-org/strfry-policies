@@ -3,12 +3,13 @@ import { readLines } from './deps.ts';
 import type { InputMessage, OutputMessage } from './types.ts';
 
 /**
- * Get the first line from stdin.
- * Can only be read ONCE, or else it returns undefined.
+ * Parse strfy messages from stdin.
+ * strfry may batch multiple messages at once.
  */
-async function readStdin(): Promise<InputMessage> {
-  const { value } = await readLines(Deno.stdin).next();
-  return JSON.parse(value);
+async function* readStdin(): AsyncGenerator<InputMessage> {
+  for await (const line of readLines(Deno.stdin)) {
+    yield JSON.parse(line);
+  }
 }
 
 /** Writes the output message to stdout. */

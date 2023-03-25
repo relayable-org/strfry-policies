@@ -10,13 +10,13 @@ import {
   writeStdout,
 } from './mod.ts';
 
-const msg = await readStdin();
+for await (const msg of readStdin()) {
+  const result = await pipeline(msg, [
+    noopPolicy,
+    [hellthreadPolicy, { limit: 100 }],
+    [antiDuplicationPolicy, { ttl: 60000, minLength: 50 }],
+    [rateLimitPolicy, { whitelist: ['127.0.0.1'] }],
+  ]);
 
-const result = await pipeline(msg, [
-  noopPolicy,
-  [hellthreadPolicy, { limit: 100 }],
-  [antiDuplicationPolicy, { ttl: 60000, minLength: 50 }],
-  [rateLimitPolicy, { whitelist: ['127.0.0.1'] }],
-]);
-
-writeStdout(result);
+  writeStdout(result);
+}
