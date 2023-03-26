@@ -9,6 +9,7 @@ import {
   pubkeyBanPolicy,
   rateLimitPolicy,
   readStdin,
+  regexPolicy,
   writeStdout,
 } from './mod.ts';
 
@@ -20,6 +21,7 @@ for await (const msg of readStdin()) {
     [rateLimitPolicy, { whitelist: ['127.0.0.1'] }],
     [pubkeyBanPolicy, ['e810fafa1e89cdf80cced8e013938e87e21b699b24c8570537be92aec4b12c18']],
     [keywordPolicy, ['https://t.me/']],
+    [regexPolicy, /(🟠|🔥|😳)ChtaGPT/i],
   ]);
 
   writeStdout(result);
