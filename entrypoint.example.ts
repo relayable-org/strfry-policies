@@ -3,6 +3,7 @@
 import {
   antiDuplicationPolicy,
   hellthreadPolicy,
+  keywordPolicy,
   noopPolicy,
   pipeline,
   pubkeyBanPolicy,
@@ -18,6 +19,7 @@ for await (const msg of readStdin()) {
     [antiDuplicationPolicy, { ttl: 60000, minLength: 50 }],
     [rateLimitPolicy, { whitelist: ['127.0.0.1'] }],
     [pubkeyBanPolicy, ['e810fafa1e89cdf80cced8e013938e87e21b699b24c8570537be92aec4b12c18']],
+    [keywordPolicy, ['https://t.me/']],
   ]);
 
   writeStdout(result);
