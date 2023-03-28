@@ -27,6 +27,7 @@ for await (const line of readLines(Deno.stdin)) {
 
     if (msg.action === 'accept') {
       console.log(JSON.stringify(event));
+      break;
     }
   }
 }
