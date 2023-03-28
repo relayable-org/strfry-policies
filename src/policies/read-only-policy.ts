@@ -4,7 +4,7 @@ import type { Policy } from '../types.ts';
 const readOnlyPolicy: Policy<void> = (msg) => ({
   id: msg.event.id,
   action: 'reject',
-  msg: 'The relay is read-only.',
+  msg: 'blocked: the relay is read-only',
 });
 
 export default readOnlyPolicy;

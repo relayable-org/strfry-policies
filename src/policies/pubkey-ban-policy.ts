@@ -18,7 +18,7 @@ const pubkeyBanPolicy: Policy<Iterable<string>> = ({ event: { id, pubkey } }, pu
     return {
       id,
       action: 'reject',
-      msg: 'Pubkey is banned.',
+      msg: 'blocked: pubkey is banned.',
     };
   }
 

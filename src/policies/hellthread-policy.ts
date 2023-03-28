@@ -16,7 +16,7 @@ const hellthreadPolicy: Policy<Hellthread> = (msg, opts) => {
       return {
         id: msg.event.id,
         action: 'reject',
-        msg: `Event rejected due to ${p.length} "p" tags (${limit} is the limit).`,
+        msg: `blocked: rejected due to ${p.length} "p" tags (${limit} is the limit).`,
       };
     }
   }
