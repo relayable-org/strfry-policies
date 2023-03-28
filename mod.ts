@@ -1,4 +1,5 @@
 export { default as antiDuplicationPolicy } from './src/policies/anti-duplication-policy.ts';
+export { default as filterPolicy } from './src/policies/filter-policy.ts';
 export { default as hellthreadPolicy } from './src/policies/hellthread-policy.ts';
 export { default as keywordPolicy } from './src/policies/keyword-policy.ts';
 export { default as noopPolicy } from './src/policies/noop-policy.ts';
