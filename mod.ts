@@ -11,6 +11,7 @@ export { default as whitelistPolicy } from './src/policies/whitelist-policy.ts';
 
 export { readStdin, writeStdout } from './src/io.ts';
 export { default as pipeline } from './src/pipeline.ts';
+export { invert } from './src/utils.ts';
 
 export type { Event, InputMessage, OutputMessage, Policy } from './src/types.ts';
 export type { PolicyTuple } from './src/pipeline.ts';

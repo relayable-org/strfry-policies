@@ -177,7 +177,35 @@ Please look directly at `src/policies` in this repo. The files include detailed 
 
 ![Policies TypeScript](https://gitlab.com/soapbox-pub/strfry-policies/uploads/dfb993b3464af5ed78bb8e5db8677458/Kazam_screencast_00090.webm)
 
-## Filtering jsonl events with your policy
+## Tips & tricks
+
+### Inverting a policy
+
+You can make any policy have the opposite effect by wrapping it in the `invert()` function. This will turn a blacklist into a whitelist and so on.
+
+```diff
+--- a/strfry-policy.ts
++++ b/strfry-policy.ts
+@@ -4,6 +4,7 @@ import {
+   antiDuplicationPolicy,
+   filterPolicy,
+   hellthreadPolicy,
++  invert,
+   keywordPolicy,
+   noopPolicy,
+   pipeline,
+@@ -24,6 +25,7 @@ for await (const msg of readStdin()) {
+     [hellthreadPolicy, { limit: 100 }],
+     [rateLimitPolicy, { whitelist: ['127.0.0.1'] }],
+     [antiDuplicationPolicy, { ttl: 60000, minLength: 50 }],
+-    [americanPolicy, { withGrey: true }],
++    [invert(americanPolicy), { withGrey: true }],
+   ]);
+
+   writeStdout(result);
+```
+
+### Filtering jsonl events with your policy
 
 It is not currently possible to retroactively filter events on your strfry relay. You can however export the events with `strfry export`, filter them locally, and then import them into a fresh database. You can also use this command to filter Nostr events from any source, not just strfry.
 
