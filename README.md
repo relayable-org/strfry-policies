@@ -2,7 +2,7 @@
 
 A collection of policies for the [strfry](https://github.com/hoytech/strfry) Nostr relay, built in Deno.
 
-For more information about installing these policies and how they work, see [Write policy plugins](https://github.com/hoytech/strfry/blob/master/docs/plugins.md).
+For more information about policy plugins, see [strfry: Write policy plugins](https://github.com/hoytech/strfry/blob/master/docs/plugins.md).
 
 This library introduces a model for writing policies and composing them in a pipeline. Policies are fully configurable and it's easy to add your own or install more from anywhere on the net.
 
