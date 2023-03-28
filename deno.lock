@@ -54,5 +54,58 @@
     "https://deno.land/x/sqlite@v2.3.2/src/row_objects.ts": "cf7ad165bb14c0fd346c46a7f3ea08043ace747d1abae3787bbe4b36be11b09c",
     "https://deno.land/x/sqlite@v2.3.2/src/rows.ts": "1b05730096f8df626bfc9d1597a776cc5ac7d989910a20711fa28c7a8daebb0e",
     "https://deno.land/x/sqlite@v2.3.2/src/wasm.ts": "9747b8c4de5542f2359a35461317f08a244fe8a0933c7e279caad27a0190e6bf"
+  },
+  "npm": {
+    "specifiers": {
+      "nostr-tools@^1.7.4": "nostr-tools@1.7.4"
+    },
+    "packages": {
+      "@noble/hashes@1.0.0": {
+        "integrity": "sha512-DZVbtY62kc3kkBtMHqwCOfXrT/hnoORy5BJ4+HU1IR59X0KWAOqsfzQPcUl/lQLlG7qXbe/fZ3r/emxtAl+sqg==",
+        "dependencies": {}
+      },
+      "@noble/hashes@1.2.0": {
+        "integrity": "sha512-FZfhjEDbT5GRswV3C6uvLPHMiVD6lQBmpoX5+eSiPaMTXte/IKqI5dykDxzZB/WBeK/CDuQRBWarPdi3FNY2zQ==",
+        "dependencies": {}
+      },
+      "@noble/secp256k1@1.7.1": {
+        "integrity": "sha512-hOUk6AyBFmqVrv7k5WAw/LpszxVbj9gGN4JRkIX52fdFAj1UA61KXmZDvqVEm+pOyec3+fIeZB02LYa/pWOArw==",
+        "dependencies": {}
+      },
+      "@scure/base@1.1.1": {
+        "integrity": "sha512-ZxOhsSyxYwLJj3pLZCefNitxsj093tb2vq90mp2txoYeBqbcjDjqFhyM8eUjq/uFm6zJ+mUuqxlS2FkuSY1MTA==",
+        "dependencies": {}
+      },
+      "@scure/bip32@1.1.5": {
+        "integrity": "sha512-XyNh1rB0SkEqd3tXcXMi+Xe1fvg+kUIcoRIEujP1Jgv7DqW2r9lg3Ah0NkFaCs9sTkQAQA8kw7xiRXzENi9Rtw==",
+        "dependencies": {
+          "@noble/hashes": "@noble/hashes@1.2.0",
+          "@noble/secp256k1": "@noble/secp256k1@1.7.1",
+          "@scure/base": "@scure/base@1.1.1"
+        }
+      },
+      "@scure/bip39@1.1.1": {
+        "integrity": "sha512-t+wDck2rVkh65Hmv280fYdVdY25J9YeEUIgn2LG1WM6gxFkGzcksoDiUkWVpVp3Oex9xGC68JU2dSbUfwZ2jPg==",
+        "dependencies": {
+          "@noble/hashes": "@noble/hashes@1.2.0",
+          "@scure/base": "@scure/base@1.1.1"
+        }
+      },
+      "nostr-tools@1.7.4": {
+        "integrity": "sha512-YowDJ+S3UW9KCYPDZfZXXMITrJSMjiCmFOK5HohyKkg+w6EipFUTkFRBPRA2BTLXO/qw8gukKXfL0B7Dv3jtcQ==",
+        "dependencies": {
+          "@noble/hashes": "@noble/hashes@1.0.0",
+          "@noble/secp256k1": "@noble/secp256k1@1.7.1",
+          "@scure/base": "@scure/base@1.1.1",
+          "@scure/bip32": "@scure/bip32@1.1.5",
+          "@scure/bip39": "@scure/bip39@1.1.1",
+          "prettier": "prettier@2.8.4"
+        }
+      },
+      "prettier@2.8.4": {
+        "integrity": "sha512-vIS4Rlc2FNh0BySk3Wkd6xmwxB0FpOndW5fisM5H8hsZSxU2VWVB5CWIkIjWvrHjIhxk2g3bfMKM87zNTrZddw==",
+        "dependencies": {}
+      }
+    }
   }
 }
