@@ -177,6 +177,26 @@ Please look directly at `src/policies` in this repo. The files include detailed 
 
 ![Policies TypeScript](https://gitlab.com/soapbox-pub/strfry-policies/uploads/dfb993b3464af5ed78bb8e5db8677458/Kazam_screencast_00090.webm)
 
+## Filtering jsonl events with your policy
+
+It is not currently possible to retroactively filter events on your strfry relay. You can however export the events with `strfry export`, filter them locally, and then import them into a fresh database. You can also use this command to filter Nostr events from any source, not just strfry.
+
+To do so, run:
+
+```sh
+cat [EVENTS_FILE] | deno task filter [POLICY_CMD] > [OUT_FILE]
+```
+
+For example:
+
+```sh
+cat events.jsonl | deno task filter ./my-policy.ts > filtered.jsonl
+```
+
+Accepted messages will be written to stdout, while rejected messages will be skipped. Also, `[POLICY_CMD]` can be _any_ strfry policy, not just one created from this repo.
+
+The command wraps each event in a strfry message of type `new`, with an `IP4` source of `127.0.0.1`, and a timestamp of the current UTC time. Therefore you may want to avoid certain policies such as the `rateLimitPolicy` that don't makes sense in this context.
+
 ## License
 
 This is free and unencumbered software released into the public domain.
