@@ -6,11 +6,8 @@ import antiDuplicationPolicy from './anti-duplication-policy.ts';
 Deno.test({
   name: 'blocks events that post the same content too quickly',
   fn: async () => {
+    const opts = { databaseUrl: undefined };
     const content = 'Spicy peppermint apricot mediterranean ginger carrot spiced juice edamame hummus';
-
-    const opts = {
-      databaseUrl: `sqlite:///tmp/${crypto.randomUUID()}.sqlite3`,
-    };
 
     const msg1 = buildInputMessage({ event: buildEvent({ content }) });
 
