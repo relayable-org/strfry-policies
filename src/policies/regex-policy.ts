@@ -8,7 +8,7 @@ const regexPolicy: Policy<RegExp> = ({ event: { id, content } }, regex) => {
     return {
       id,
       action: 'reject',
-      msg: 'Event matches a banned expression.',
+      msg: 'blocked: text matches a banned expression.',
     };
   }
 

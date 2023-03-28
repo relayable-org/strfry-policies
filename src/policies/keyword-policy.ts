@@ -15,7 +15,7 @@ const keywordPolicy: Policy<Iterable<string>> = ({ event: { id, content } }, wor
     return {
       id,
       action: 'reject',
-      msg: 'Event contains a banned word or phrase.',
+      msg: 'blocked: contains a banned word or phrase.',
     };
   }
 

@@ -14,7 +14,7 @@ Deno.test('passes events through multiple policies', async () => {
   ]);
 
   assertEquals(result.action, 'reject');
-  assertEquals(result.msg, 'The relay is read-only.');
+  assertEquals(result.msg, 'blocked: the relay is read-only');
 });
 
 Deno.test('short-circuits on the first reject', async () => {
@@ -26,7 +26,7 @@ Deno.test('short-circuits on the first reject', async () => {
   ]);
 
   assertEquals(result.action, 'reject');
-  assertEquals(result.msg, 'The relay is read-only.');
+  assertEquals(result.msg, 'blocked: the relay is read-only');
 });
 
 Deno.test('accepts when all policies accept', async () => {

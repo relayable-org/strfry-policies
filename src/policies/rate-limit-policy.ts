@@ -33,7 +33,7 @@ const rateLimitPolicy: Policy<RateLimit> = async (msg, opts) => {
       return {
         id: msg.event.id,
         action: 'reject',
-        msg: 'Rate-limited.',
+        msg: 'rate-limited: too many requests',
       };
     }
   }

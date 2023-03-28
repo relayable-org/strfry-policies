@@ -25,7 +25,7 @@ const whitelistPolicy: Policy<Iterable<string>> = ({ event: { id, pubkey } }, pu
   return {
     id,
     action: 'reject',
-    msg: 'Only certain pubkeys are allowed.',
+    msg: 'blocked: only certain pubkeys are allowed to post',
   };
 };
 
