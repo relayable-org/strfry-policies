@@ -8,7 +8,12 @@ import type { InputMessage, OutputMessage } from './types.ts';
  */
 async function* readStdin(): AsyncGenerator<InputMessage> {
   for await (const line of readLines(Deno.stdin)) {
-    yield JSON.parse(line);
+    try {
+      yield JSON.parse(line);
+    } catch (e) {
+      console.error(line);
+      throw e;
+    }
   }
 }
 
