@@ -19,15 +19,24 @@ for await (const line of readLines(Deno.stdin)) {
     stdout: 'piped',
   });
 
-  await policy.stdin.write(new TextEncoder().encode(JSON.stringify(input)));
+  const bytes = new TextEncoder().encode(JSON.stringify(input));
+  const writer = policy.stdin.writable.getWriter();
+
+  const chunkSize = 4096;
+  for (let i = 0; i < bytes.length; i += chunkSize) {
+    const chunk = bytes.slice(i, i + chunkSize);
+    await writer.write(chunk);
+  }
+
   policy.stdin.close();
 
   for await (const out of readLines(policy.stdout)) {
     const msg: OutputMessage = JSON.parse(out);
 
     if (msg.action === 'accept') {
-      console.log(JSON.stringify(event));
-      break;
+      console.log(line);
     }
+
+    break;
   }
 }
