@@ -5,21 +5,14 @@ import { Policy } from '../types.ts';
  * Pass an array of pubkeys or an iterable, making it efficient to load pubkeys from a large file.
  */
 const pubkeyBanPolicy: Policy<Iterable<string>> = ({ event: { id, pubkey } }, pubkeys = []) => {
-  let isMatch = false;
-
   for (const p of pubkeys) {
     if (p === pubkey) {
-      isMatch = true;
-      break;
+      return {
+        id,
+        action: 'reject',
+        msg: 'blocked: pubkey is banned.',
+      };
     }
-  }
-
-  if (isMatch) {
-    return {
-      id,
-      action: 'reject',
-      msg: 'blocked: pubkey is banned.',
-    };
   }
 
   return {
