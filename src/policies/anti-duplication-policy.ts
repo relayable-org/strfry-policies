@@ -17,9 +17,11 @@ interface AntiDuplication {
  * Only messages that meet the minimum length criteria are selected.
  */
 const antiDuplicationPolicy: Policy<AntiDuplication> = async (msg, opts = {}) => {
-  const ttl = opts.ttl ?? 60000;
-  const minLength = opts.minLength ?? 50;
-  const databaseUrl = opts.databaseUrl ?? 'sqlite:///tmp/strfry-anti-duplication-policy.sqlite3';
+  const {
+    ttl = 60000,
+    minLength = 50,
+    databaseUrl = 'sqlite:///tmp/strfry-anti-duplication-policy.sqlite3',
+  } = opts;
 
   const { kind, content } = msg.event;
 
