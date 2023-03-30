@@ -175,9 +175,9 @@ Then, in the pipeline:
 
 ## Available policies
 
-Please look directly at `src/policies` in this repo. The files include detailed JSDoc comments and it has good type support.
+For complete documentation of policies, see:
 
-![Policies TypeScript](https://gitlab.com/soapbox-pub/strfry-policies/uploads/dfb993b3464af5ed78bb8e5db8677458/Kazam_screencast_00090.webm)
+- https://doc.deno.land/https://gitlab.com/soapbox-pub/strfry-policies/-/raw/develop/mod.ts
 
 ## Filtering jsonl events with your policy
 
