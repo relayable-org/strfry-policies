@@ -6,6 +6,8 @@ For more information about policy plugins, see [strfry: Write policy plugins](ht
 
 This library introduces a model for writing policies and composing them in a pipeline. Policies are fully configurable and it's easy to add your own or install more from anywhere on the net.
 
+![Screenshot_from_2023-03-29_23-06-06](https://gitlab.com/soapbox-pub/strfry-policies/uploads/2df58fec61882e8a628f34812a09e2a9/Screenshot_from_2023-03-29_23-06-06.png)
+
 ## Getting started
 
 To get up and running, you will need to install Deno on the same machine as strfry:
