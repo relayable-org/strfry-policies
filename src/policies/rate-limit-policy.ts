@@ -18,11 +18,13 @@ interface RateLimit {
  * IPs are stored in an SQLite database. If you are running internal services,
  * it's a good idea to at least whitelist `127.0.0.1` etc.
  */
-const rateLimitPolicy: Policy<RateLimit> = async (msg, opts) => {
-  const interval = opts?.interval ?? 60000;
-  const max = opts?.max ?? 10;
-  const whitelist = opts?.whitelist || [];
-  const databaseUrl = opts?.databaseUrl || 'sqlite:///tmp/strfry-rate-limit-policy.sqlite3';
+const rateLimitPolicy: Policy<RateLimit> = async (msg, opts = {}) => {
+  const {
+    interval = 60000,
+    max = 10,
+    whitelist = [],
+    databaseUrl = 'sqlite:///tmp/strfry-rate-limit-policy.sqlite3',
+  } = opts;
 
   if ((msg.sourceType === 'IP4' || msg.sourceType === 'IP6') && !whitelist.includes(msg.sourceInfo)) {
     const db = new Keydb(databaseUrl);

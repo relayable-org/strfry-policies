@@ -16,10 +16,10 @@ interface AntiDuplication {
  * It stores a hashcode for each content in an SQLite database and rate-limits them.
  * Only messages that meet the minimum length criteria are selected.
  */
-const antiDuplicationPolicy: Policy<AntiDuplication> = async (msg, opts) => {
-  const ttl = opts?.ttl ?? 60000;
-  const minLength = opts?.minLength ?? 50;
-  const databaseUrl = opts?.databaseUrl || 'sqlite:///tmp/strfry-anti-duplication-policy.sqlite3';
+const antiDuplicationPolicy: Policy<AntiDuplication> = async (msg, opts = {}) => {
+  const ttl = opts.ttl ?? 60000;
+  const minLength = opts.minLength ?? 50;
+  const databaseUrl = opts.databaseUrl ?? 'sqlite:///tmp/strfry-anti-duplication-policy.sqlite3';
 
   const { kind, content } = msg.event;
 
