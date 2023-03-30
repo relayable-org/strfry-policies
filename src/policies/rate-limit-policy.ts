@@ -2,6 +2,7 @@ import { Keydb } from '../deps.ts';
 
 import type { Policy } from '../types.ts';
 
+/** Policy options for `rateLimitPolicy`. */
 interface RateLimit {
   /** How often (ms) to check whether `max` has been exceeded. Default: `60000` (1 minute). */
   interval?: number;
@@ -15,8 +16,14 @@ interface RateLimit {
 
 /**
  * Rate-limits users by their IP address.
- * IPs are stored in an SQLite database. If you are running internal services,
- * it's a good idea to at least whitelist `127.0.0.1` etc.
+ *
+ * IPs are stored in an SQLite database. If you are running internal services, it's a good idea to at least whitelist `127.0.0.1` etc.
+ *
+ * @example
+ * ```ts
+ * // Limit to 10 events per second.
+ * rateLimitPolicy(msg, { max: 10, interval: 60000 });
+ * ```
  */
 const rateLimitPolicy: Policy<RateLimit> = async (msg, opts = {}) => {
   const {

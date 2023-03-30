@@ -1,5 +1,6 @@
 /**
  * strfry input message from stdin.
+ *
  * https://github.com/hoytech/strfry/blob/master/docs/plugins.md#input-messages
  */
 interface InputMessage {
@@ -17,6 +18,7 @@ interface InputMessage {
 
 /**
  * strfry output message to be printed as JSONL (minified JSON followed by a newline) to stdout.
+ *
  * https://github.com/hoytech/strfry/blob/master/docs/plugins.md#output-messages
  */
 interface OutputMessage {
@@ -30,6 +32,7 @@ interface OutputMessage {
 
 /**
  * Nostr event.
+ *
  * https://github.com/nostr-protocol/nips/blob/master/01.md
  */
 interface Event<K extends number = number> {
@@ -48,4 +51,7 @@ interface Event<K extends number = number> {
  */
 type Policy<Opts = unknown> = (msg: InputMessage, opts?: Opts) => Promise<OutputMessage> | OutputMessage;
 
-export type { Event, InputMessage, OutputMessage, Policy };
+/** Sync or async iterable of pubkeys, designed for efficiently loading from large files. */
+type IterablePubkeys = Iterable<string> | AsyncIterable<string>;
+
+export type { Event, InputMessage, IterablePubkeys, OutputMessage, Policy };

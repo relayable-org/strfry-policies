@@ -5,6 +5,14 @@ import type { InputMessage, OutputMessage } from './types.ts';
 /**
  * Parse strfy messages from stdin.
  * strfry may batch multiple messages at once.
+ *
+ * @example
+ * ```ts
+ * // Loop through strfry input messages
+ * for await (const msg of readStdin()) {
+ *   // handle `msg`
+ * }
+ * ```
  */
 async function* readStdin(): AsyncGenerator<InputMessage> {
   for await (const line of readLines(Deno.stdin)) {

@@ -1,8 +1,19 @@
 import { Policy } from '../types.ts';
 
-import { Filter, matchFilter } from 'npm:nostr-tools@^1.7.4';
+import { type Filter, matchFilter } from 'https://esm.sh/v113/nostr-tools@1.8.1';
 
-/** Reject all events which don't match the filter. */
+/**
+ * Reject all events which don't match the filter.
+ *
+ * Only messages which **match** the filter are allowed, and all others are dropped.
+ * The filter is a [NIP-01](https://github.com/nostr-protocol/nips/blob/master/01.md) relay filter.
+ *
+ * @example
+ * ```ts
+ * // Only allow kind 1, 3, 5, and 7 events.
+ * filterPolicy(msg, { kinds: [0, 1, 3, 5, 7] });
+ * ```
+ */
 const filterPolicy: Policy<Filter> = ({ event }, filter = {}) => {
   if (matchFilter(filter, event)) {
     return {

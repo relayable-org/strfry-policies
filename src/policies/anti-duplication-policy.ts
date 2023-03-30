@@ -2,6 +2,7 @@ import { Keydb } from '../deps.ts';
 
 import type { Policy } from '../types.ts';
 
+/** Policy options for `antiDuplicationPolicy`. */
 interface AntiDuplication {
   /** Time in ms until a message with this content may be posted again. Default: `60000` (1 minute). */
   ttl?: number;
@@ -13,8 +14,21 @@ interface AntiDuplication {
 
 /**
  * Prevent messages with the exact same content from being submitted repeatedly.
- * It stores a hashcode for each content in an SQLite database and rate-limits them.
- * Only messages that meet the minimum length criteria are selected.
+ *
+ * It stores a hashcode for each content in an SQLite database and rate-limits them. Only messages that meet the minimum length criteria are selected.
+ * Each time a matching message is submitted, the timer will reset, so spammers sending the same message will only ever get the first one through.
+ *
+ * @example
+ * ```ts
+ * // Prevent the same message from being posted within 60 seconds.
+ * antiDuplicationPolicy(msg, { ttl: 60000 });
+ *
+ * // Only enforce the policy on messages with at least 50 characters.
+ * antiDuplicationPolicy(msg, { ttl: 60000, minLength: 50 });
+ *
+ * // Use a custom SQLite path.
+ * antiDuplicationPolicy(msg, { databaseUrl: 'sqlite:///media/ramdisk/nostr-contenthash.sqlite3' });
+ * ```
  */
 const antiDuplicationPolicy: Policy<AntiDuplication> = async (msg, opts = {}) => {
   const {

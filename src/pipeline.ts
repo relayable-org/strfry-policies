@@ -12,7 +12,25 @@ type Policies<T extends any[]> = {
   [K in keyof T]: PolicyTuple<T[K]> | Policy<T[K]>;
 };
 
-/** Processes messages through multiple policies, bailing early on rejection. */
+/**
+ * Processes messages through multiple policies.
+ *
+ * If any policy returns a `reject` or `shadowReject` action, the pipeline will stop and return the rejected message.
+ *
+ * @example
+ * ```ts
+ * const result = await pipeline(msg, [
+ *  noopPolicy,
+ *  [filterPolicy, { kinds: [0, 1, 3, 5, 7, 1984, 9734, 9735, 10002] }],
+ *  [keywordPolicy, ['https://t.me/']],
+ *  [regexPolicy, /(🟠|🔥|😳)ChtaGPT/i],
+ *  [pubkeyBanPolicy, ['e810fafa1e89cdf80cced8e013938e87e21b699b24c8570537be92aec4b12c18']],
+ *  [hellthreadPolicy, { limit: 100 }],
+ *  [rateLimitPolicy, { whitelist: ['127.0.0.1'] }],
+ *  [antiDuplicationPolicy, { ttl: 60000, minLength: 50 }],
+ * ]);
+ * ```
+ */
 async function pipeline<T extends unknown[]>(msg: InputMessage, policies: [...Policies<T>]): Promise<OutputMessage> {
   for (const item of policies as (Policy | PolicyTuple)[]) {
     const [policy, opts] = toTuple(item);

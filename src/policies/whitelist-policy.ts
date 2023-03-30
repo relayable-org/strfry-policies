@@ -1,11 +1,18 @@
-import type { Policy } from '../types.ts';
+import type { IterablePubkeys, Policy } from '../types.ts';
 
 /**
  * Allows only the listed pubkeys to post to the relay. All other events are rejected.
- * Pass an array of pubkeys or an iterable, making it efficient to load pubkeys from a large file.
+
+ * @example
+ * ```ts
+ * // Load allowed pubkeys from a text file.
+ * import { readLines } from 'https://deno.land/std/io/mod.ts';
+ * const pubkeys = readLines(await Deno.open('pubkeys.txt'));
+ * const result = await whitelistPolicy(msg, pubkeys);
+ * ```
  */
-const whitelistPolicy: Policy<Iterable<string>> = ({ event: { id, pubkey } }, pubkeys = []) => {
-  for (const p of pubkeys) {
+const whitelistPolicy: Policy<IterablePubkeys> = async ({ event: { id, pubkey } }, pubkeys = []) => {
+  for await (const p of pubkeys) {
     if (p === pubkey) {
       return {
         id,
