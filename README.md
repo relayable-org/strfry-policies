@@ -63,6 +63,12 @@ Finally, edit `strfry.conf` and enable the policy:
 
 That's it! 🎉 Now you should check strfry logs to ensure everything is working okay.
 
+## Available policies
+
+For complete documentation of policies, see:
+
+- https://doc.deno.land/https://gitlab.com/soapbox-pub/strfry-policies/-/raw/develop/mod.ts
+
 ## Writing your own policies
 
 You can write a policy in TypeScript and host it anywhere. Deno allows importing modules by URL, making it easy to share policies.
@@ -172,12 +178,6 @@ Then, in the pipeline:
 ### Caveats
 
 - You should not use `console.log` anywhere in your policies, as strfry expects stdout to be the strfry output message.
-
-## Available policies
-
-For complete documentation of policies, see:
-
-- https://doc.deno.land/https://gitlab.com/soapbox-pub/strfry-policies/-/raw/develop/mod.ts
 
 ## Filtering jsonl events with your policy
 
