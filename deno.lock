@@ -210,5 +210,16 @@
     "https://esm.sh/v113/nostr-tools@1.8.1/lib/references.d.ts": "b2e39f5c439380a1dc8e578b471ba3992f33e3936aa0eecf625734c7ba669098",
     "https://esm.sh/v113/nostr-tools@1.8.1/lib/relay.d.ts": "9bc6f2897a95ec12d128e94b2e7d6161d30a6bfe8d4350e217fbf4b710988db3",
     "https://esm.sh/v113/nostr-tools@1.8.1/lib/utils.d.ts": "6f37b09db0dce09f17ff7b70b921b9bb809bcb18c3bc058cb914afdf3c0e774e"
+  },
+  "npm": {
+    "specifiers": {
+      "@noble/secp256k1@^1.7.1": "@noble/secp256k1@1.7.1"
+    },
+    "packages": {
+      "@noble/secp256k1@1.7.1": {
+        "integrity": "sha512-hOUk6AyBFmqVrv7k5WAw/LpszxVbj9gGN4JRkIX52fdFAj1UA61KXmZDvqVEm+pOyec3+fIeZB02LYa/pWOArw==",
+        "dependencies": {}
+      }
+    }
   }
 }
