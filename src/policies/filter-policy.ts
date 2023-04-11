@@ -1,6 +1,5 @@
+import { type Filter, matchFilter } from '../deps.ts';
 import { Policy } from '../types.ts';
-
-import { type Filter, matchFilter } from 'https://esm.sh/v113/nostr-tools@1.8.1';
 
 /**
  * Reject all events which don't match the filter.
