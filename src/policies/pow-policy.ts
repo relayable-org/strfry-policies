@@ -4,7 +4,7 @@ import type { Policy } from '../types.ts';
 
 /** Policy options for `powPolicy`. */
 interface POW {
-  /** Events will be rejected if their `id` does not contain at least this many leading `0`'s. Default: `1` */
+  /** Events will be rejected if their `id` does not contain at least this many leading 0 bits. Default: `1` */
   difficulty?: number;
 }
 
