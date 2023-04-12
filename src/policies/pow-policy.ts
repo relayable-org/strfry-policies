@@ -31,3 +31,5 @@ const powPolicy: Policy<POW> = ({ event }, opts = {}) => {
 };
 
 export default powPolicy;
+
+export type { POW };
