@@ -1,4 +1,5 @@
 {
+  "lock": false,
   "tasks": {
     "test": "deno test --allow-read --allow-write",
     "filter": "deno run -A scripts/filter.ts",
