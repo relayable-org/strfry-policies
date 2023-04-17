@@ -12,7 +12,7 @@ await build({
   package: {
     name: 'strfry-policies',
     version: Deno.args[0],
-    description: 'Configurably policies for the strfry Nostr relay.',
+    description: 'Configurable policies for the strfry Nostr relay.',
     license: 'Unlicense',
     repository: {
       type: 'git',
