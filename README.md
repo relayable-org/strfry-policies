@@ -65,9 +65,22 @@ That's it! 🎉 Now you should check strfry logs to ensure everything is working
 
 ## Available policies
 
-For complete documentation of policies, see:
+For complete documentation of policies, see: https://doc.deno.land/https://gitlab.com/soapbox-pub/strfry-policies/-/raw/develop/mod.ts
 
-- https://doc.deno.land/https://gitlab.com/soapbox-pub/strfry-policies/-/raw/develop/mod.ts
+| Policy                  | Description                                                                                                                 | Example Options                     |
+| ----------------------- | --------------------------------------------------------------------------------------------------------------------------- | ----------------------------------- |
+| `antiDuplicationPolicy` | Prevent messages with the exact same content from being submitted repeatedly.                                               | `{ ttl: 60000, minLength: 50}`      |
+| `filterPolicy`          | Reject all events which don't match the filter.                                                                             | `{ kinds: [0, 1, 3, 5, 6, 7] }`     |
+| `hellthreadPolicy`      | Reject messages that tag too many participants.                                                                             | `{ limit: 15 }`                     |
+| `keywordPolicy`         | Reject events containing any of the strings in its content.                                                                 | `['moo', 'oink', 'honk']`           |
+| `noopPolicy`            | Minimal sample policy for demonstration purposes. Allows all events through.                                                |                                     |
+| `openaiPolicy`          | Passes event content to OpenAI and then rejects flagged events.                                                             | `{ apiKey: '123...' }`              |
+| `powPolicy`             | Reject events which don't meet Proof-of-Work ([NIP-13](https://github.com/nostr-protocol/nips/blob/master/13.md)) criteria. | `{ difficulty: 20 }`                |
+| `pubkeyBanPolicy`       | Ban individual pubkeys from publishing events to the relay.                                                                 | `['e810...', 'fafa...', '1e89...']` |
+| `rateLimitPolicy`       | Rate-limits users by their IP address.                                                                                      | `{ max: 10, interval: 60000 }`      |
+| `readOnlyPolicy`        | This policy rejects all messages.                                                                                           |                                     |
+| `regexPolicy`           | Reject events whose content matches the regex.                                                                              | `/(🟠\|🔥\|😳)ChtaGPT/i`            |
+| `whitelistPolicy`       | Allows only the listed pubkeys to post to the relay. All other events are rejected.                                         | `['e810...', 'fafa...', '1e89...']` |
 
 ## Writing your own policies
 

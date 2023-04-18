@@ -10,7 +10,7 @@ import { Policy } from '../types.ts';
  * @example
  * ```ts
  * // Only allow kind 1, 3, 5, and 7 events.
- * filterPolicy(msg, { kinds: [0, 1, 3, 5, 7] });
+ * filterPolicy(msg, { kinds: [0, 1, 3, 5, 6, 7] });
  * ```
  */
 const filterPolicy: Policy<Filter> = ({ event }, filter = {}) => {
