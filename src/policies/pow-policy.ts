@@ -8,7 +8,14 @@ interface POW {
   difficulty?: number;
 }
 
-/** Reject events which don't meet Proof-of-Work ([NIP-13](https://github.com/nostr-protocol/nips/blob/master/13.md)) criteria. */
+/**
+ * Reject events which don't meet Proof-of-Work ([NIP-13](https://github.com/nostr-protocol/nips/blob/master/13.md)) criteria.
+ *
+ * @example
+ * ```ts
+ * powPolicy(msg, { difficulty: 20 });
+ * ```
+ */
 const powPolicy: Policy<POW> = ({ event }, opts = {}) => {
   const { difficulty = 1 } = opts;
 
