@@ -82,6 +82,32 @@ For complete documentation of policies, see: https://doc.deno.land/https://gitla
 | `regexPolicy`           | Reject events whose content matches the regex.                                                                              | `/(🟠\|🔥\|😳)ChtaGPT/i`            |
 | `whitelistPolicy`       | Allows only the listed pubkeys to post to the relay. All other events are rejected.                                         | `['e810...', 'fafa...', '1e89...']` |
 
+## Upgrading strfry-policies
+
+When writing your script, it's a good idea to import the module with a permalink, eg:
+
+```diff
+- import * as strfry from 'https://gitlab.com/soapbox-pub/strfry-policies/-/raw/develop/mod.ts';
++ import * as strfry from 'https://gitlab.com/soapbox-pub/strfry-policies/-/raw/33ef127ca7599d9d7016786cbe2de34c9536078c/mod.ts';
+```
+
+You can also import from a tag:
+
+```diff
+- import * as strfry from 'https://gitlab.com/soapbox-pub/strfry-policies/-/raw/develop/mod.ts';
++ import * as strfry from 'https://gitlab.com/soapbox-pub/strfry-policies/-/raw/v0.1.0/mod.ts';
+```
+
+Therefore, to upgrade to a newer version of strfry-policies, you can simply change the import URL.
+
+## Usage with Node.js
+
+We highly recommend running this library with Deno, but for those looking to incorporate it into an existing Node.js project, an NPM version is provided:
+
+- https://www.npmjs.com/package/strfry-policies
+
+This version is built with [dnt](https://github.com/denoland/dnt) which provides Node.js shims for Deno features. Some policies that rely on sqlite may not work, but core fuctionality and TypeScript types work fine, so it can be used as a framework to build other policies.
+
 ## Writing your own policies
 
 You can write a policy in TypeScript and host it anywhere. Deno allows importing modules by URL, making it easy to share policies.
@@ -211,6 +237,18 @@ cat events.jsonl | deno task filter ./my-policy.ts > filtered.jsonl
 Accepted messages will be written to stdout, while rejected messages will be skipped. Also, `[POLICY_CMD]` can be _any_ strfry policy, not just one created from this repo.
 
 The command wraps each event in a strfry message of type `new`, with an `IP4` source of `127.0.0.1`, and a timestamp of the current UTC time. Therefore you may want to avoid certain policies such as the `rateLimitPolicy` that don't makes sense in this context.
+
+## FAQ
+
+### Why Deno?
+
+Deno was developed by the creator of Node.js to solve various problems with Node. It implements web standard APIs such as SubtleCrypto and Fetch so your code is compatible with web browsers. It is also significantly faster in benchmarks.
+
+### Can I integrate this into another project?
+
+If you're building your own relay, make it compatible with [strfry plugins](https://github.com/hoytech/strfry/blob/master/docs/plugins.md). strfry plugins utilize stdin and stdout of the operating system, so the relay can be written in any programming language and it will be able to utilize plugins written in any programming language.
+
+If you're writing software that deals with Nostr events in JavaScript or TypeScript, you can import this library and use its functions directly.
 
 ## License
 
