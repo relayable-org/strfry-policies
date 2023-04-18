@@ -250,6 +250,10 @@ If you're building your own relay, make it compatible with [strfry plugins](http
 
 If you're writing software that deals with Nostr events in JavaScript or TypeScript, you can import this library and use its functions directly.
 
+### Is performance good?
+
+It depends on which policies you use, but the short answer is "yes." Even policies that rely on sqlite (such as `rateLimitPolicy` and `antiDuplicationPolicy`) perform well. You should place those policies at the end of your pipeline so that synchronous policies have the chance to reject sooner. You can also mount a tmpfs volume and pass a `databaseUrl` option into those policies to serve their database from memory.
+
 ## License
 
 This is free and unencumbered software released into the public domain.
