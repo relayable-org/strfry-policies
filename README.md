@@ -100,14 +100,6 @@ You can also import from a tag:
 
 Therefore, to upgrade to a newer version of strfry-policies, you can simply change the import URL.
 
-## Usage with Node.js
-
-We highly recommend running this library with Deno, but for those looking to incorporate it into an existing Node.js project, an NPM version is provided:
-
-- https://www.npmjs.com/package/strfry-policies
-
-This version is built with [dnt](https://github.com/denoland/dnt) which provides Node.js shims for Deno features. Some policies that rely on sqlite may not work, but core fuctionality and TypeScript types work fine, so it can be used as a framework to build other policies.
-
 ## Writing your own policies
 
 You can write a policy in TypeScript and host it anywhere. Deno allows importing modules by URL, making it easy to share policies.
@@ -217,6 +209,14 @@ Then, in the pipeline:
 ### Caveats
 
 - You should not use `console.log` anywhere in your policies, as strfry expects stdout to be the strfry output message.
+
+## Usage with Node.js
+
+We highly recommend running this library with Deno, but for those looking to incorporate it into an existing Node.js project, an NPM version is provided:
+
+- https://www.npmjs.com/package/strfry-policies
+
+This version is built with [dnt](https://github.com/denoland/dnt) which provides Node.js shims for Deno features. Some policies that rely on sqlite may not work, but core fuctionality and TypeScript types work fine, so it can be used as a framework to build other policies.
 
 ## Filtering jsonl events with your policy
 
